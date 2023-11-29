@@ -1,25 +1,66 @@
-import { Injectable } from '@angular/core';
+import {Injectable} from '@angular/core';
+import {AuthenticationPersist} from '../dto/authentication-persist';
 
-@Injectable()
+@Injectable({
+    providedIn: 'root'
+})
 export class TokenStorage {
-  getAccessToken() {
-    return localStorage.getItem('accessToken');
-  }
+    private readonly localStorageKey = 'persist:root';
 
-  getRefreshToken() {
-    return localStorage.getItem('refreshToken');
-  }
+    getAccessToken(): string | null {
+        const persist = this.getAuthenticationPersist();
+        return persist?.authentication.token || null;
+    }
 
-  setAccessToken(token: string) {
-    localStorage.setItem('accessToken', token);
-  }
+    getRefreshToken(): string | null {
+        const persist = this.getAuthenticationPersist();
+        return persist?.authentication.refreshToken || null;
+    }
 
-  setRefreshToken(token: string) {
-    localStorage.setItem('refreshToken', token);
-  }
+    setAccessToken(token: string): void {
+        let persist = this.getAuthenticationPersist() || this.createEmptyPersist();
+        persist.authentication.token = token;
+        this.savePersist(persist);
+    }
 
-  clear() {
-    localStorage.removeItem('accessToken');
-    localStorage.removeItem('refreshToken');
-  }
+    setRefreshToken(token: string): void {
+        let persist = this.getAuthenticationPersist() || this.createEmptyPersist();
+        persist.authentication.refreshToken = token;
+        this.savePersist(persist);
+    }
+
+    clear(): void {
+        localStorage.removeItem(this.localStorageKey);
+    }
+
+    private getAuthenticationPersist(): AuthenticationPersist | null {
+        const persistString = localStorage.getItem(this.localStorageKey);
+        return persistString ? JSON.parse(persistString) : null;
+    }
+
+    private savePersist(persist: AuthenticationPersist): void {
+        localStorage.setItem(this.localStorageKey, JSON.stringify(persist));
+    }
+
+    private createEmptyPersist(): AuthenticationPersist {
+        return {
+            gdpr: {
+                initial: false,
+                settings: {
+                    analytics: false,
+                },
+            },
+            authentication: {
+                token: null,
+                refreshToken: null,
+            },
+            i18n: {
+                locale: 'fr',
+            },
+            _persist: {
+                version: -1,
+                rehydrated: true,
+            },
+        };
+    }
 }
