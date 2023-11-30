@@ -16,17 +16,21 @@ export class LoginComponent implements OnInit {
 
     ngOnInit(): void {
         // Exemple d'utilisation du service dans le composant
-        this.authService.authenticate({
-            email: 'ouhrioutman@gmail.com',
-            password: 'azejdkdf',
-        });
+
+        // this.authService.authenticate({
+        //     email: 'ouhrioutmanEh@gmail.com',
+        //     password: 'azejdkdf',
+        // });
+        this.authService.refreshToken();
     }
 
     login() {
-        this.authService.authenticate({
-            email: 'ouhrioutman@gmail.com',
-            password: 'azejdkdf',
-        });
+        // this.authService.authenticate({
+        //     email: 'ouhrioutmanEh@gmail.com',
+        //     password: 'azejdkdf',
+        // });
+        // this.authService.refreshToken();
+
         console.log("login 2");
     }
 }

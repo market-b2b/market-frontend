@@ -6,8 +6,8 @@ export interface AuthenticationPersist {
         };
     };
     authentication: {
-        token: string | null;
-        refreshToken: string | null;
+        access_token: string | null;
+        refresh_token: string | null;
     };
     i18n: {
         locale: string;

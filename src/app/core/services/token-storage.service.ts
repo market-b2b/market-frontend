@@ -9,23 +9,29 @@ export class TokenStorage {
 
     getAccessToken(): string | null {
         const persist = this.getAuthenticationPersist();
-        return persist?.authentication.token || null;
+        return persist?.authentication.access_token || null;
     }
 
     getRefreshToken(): string | null {
         const persist = this.getAuthenticationPersist();
-        return persist?.authentication.refreshToken || null;
+        return persist?.authentication.refresh_token || null;
+    }
+
+    setToken(token: any): void {
+        let persist = this.getAuthenticationPersist() || this.createEmptyPersist();
+        persist.authentication = token;
+        this.savePersist(persist);
     }
 
     setAccessToken(token: string): void {
         let persist = this.getAuthenticationPersist() || this.createEmptyPersist();
-        persist.authentication.token = token;
+        persist.authentication.access_token = token;
         this.savePersist(persist);
     }
 
     setRefreshToken(token: string): void {
         let persist = this.getAuthenticationPersist() || this.createEmptyPersist();
-        persist.authentication.refreshToken = token;
+        persist.authentication.refresh_token = token;
         this.savePersist(persist);
     }
 
@@ -51,8 +57,8 @@ export class TokenStorage {
                 },
             },
             authentication: {
-                token: null,
-                refreshToken: null,
+                access_token: null,
+                refresh_token: null,
             },
             i18n: {
                 locale: 'fr',
