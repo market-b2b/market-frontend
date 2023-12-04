@@ -1,11 +1,21 @@
-import {ChangeDetectionStrategy, Component, ViewEncapsulation} from '@angular/core';
+import { NgDompurifySanitizer} from "@tinkoff/ng-dompurify";
+import {Component, OnInit} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {RouterOutlet} from '@angular/router';
-import {TuiButtonModule, TuiModeModule, TuiRootModule, TuiThemeNightModule} from '@taiga-ui/core';
+import {
+  TUI_SANITIZER,
+  TuiAlertModule,
+  TuiButtonModule,
+  TuiDialogModule,
+  TuiModeModule,
+  TuiRootModule,
+  TuiThemeNightModule
+} from '@taiga-ui/core';
 import {TuiInputModule, TuiToggleModule} from "@taiga-ui/kit";
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {AbstractTuiThemeSwitcher, TuiLetModule} from "@taiga-ui/cdk";
 import {BehaviorSubject, Observable} from 'rxjs';
+import {initFlowbite} from 'flowbite';
 
 @Component({
   selector: 'app-root',
@@ -21,15 +31,19 @@ import {BehaviorSubject, Observable} from 'rxjs';
     TuiLetModule,
     TuiButtonModule,
     TuiToggleModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    TuiDialogModule,
+    TuiAlertModule
   ],
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css'],
-
-  encapsulation: ViewEncapsulation.None,
-  changeDetection: ChangeDetectionStrategy.OnPush,
+  providers: [{provide: TUI_SANITIZER, useClass: NgDompurifySanitizer}]
 })
-export class AppComponent extends AbstractTuiThemeSwitcher {
+export class AppComponent extends AbstractTuiThemeSwitcher implements OnInit {
+  ngOnInit(): void {
+    initFlowbite();
+  }
+
   title = 'market';
   isNight = false;
   private nightSubject = new BehaviorSubject<boolean>(this.isNight);

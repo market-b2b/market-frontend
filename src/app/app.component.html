@@ -1,14 +1,16 @@
 <tui-root *tuiLet="night$ | async as night" [tuiMode]="night ? 'onDark' : null">
   <div [class]="night ? 'dark' : 'light'">
     <tui-theme-night *ngIf="night"></tui-theme-night>
-    <div class="flex bg-gray-100 min-h-screen dark:bg-gray-900 max-h-screen transition duration-300 ease-in-out">
+    <div class="bg-gray-100 min-h-screen min-w-full dark:bg-gray-900 transition duration-300 ease-in-out">
+      <div class="absolute bottom-2 right-2">
+        <tui-toggle
+          class="tui-space_left-1"
+          [(ngModel)]="isNight"
+          [showIcons]="true"
+          (click)="toggleNight()"
+        ></tui-toggle>
+      </div>
       <router-outlet></router-outlet>
-      <tui-toggle
-        class="tui-space_left-1"
-        [(ngModel)]="isNight"
-        [showIcons]="true"
-        (click)="toggleNight()"
-      ></tui-toggle>
     </div>
   </div>
 </tui-root>
